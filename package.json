@@ -1,0 +1,21 @@
+{
+  "name": "vocabulary-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "It is simple vocabulary api",
+  "keywords": [],
+  "author": "Igor Mykhaylyuk",
+  "license": "",
+  "main": "app.js",
+  "engines": {
+    "node": "8.11.1",
+    "npm": "5.6.0"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.16.3",
+    "mongoose": "5.0.14"
+  }
+}
