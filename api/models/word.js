@@ -11,9 +11,23 @@ const WordSchema = new mongoose.Schema({
         required: true,
         message: 'Translation for word is mandatory'
     },
-    islearned: {
+    successAnswers: {
+	type: Number,
+	default: 0,
+	min: 0,
+	max: 7
+    },
+    learned: {
         type: Boolean,
         default: false
+    },
+    creationDate: {
+	type: Date,
+	default: Date.now
+    },
+    lastSuccessAnswer: {
+	type: Date,
+	required: true
     }
 });
 
