@@ -12,22 +12,22 @@ const WordSchema = new mongoose.Schema({
         message: 'Translation for word is mandatory'
     },
     successAnswers: {
-	type: Number,
-	default: 0,
-	min: 0,
-	max: 7
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 7
     },
     learned: {
         type: Boolean,
         default: false
     },
     creationDate: {
-	type: Date,
-	default: Date.now
+        type: String,
+        required: true,
+        default: (new Date()).toISOString()
     },
     lastSuccessAnswer: {
-	type: Date,
-	required: true
+        type: String
     }
 });
 
