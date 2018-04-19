@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+app.set('case sensitive routing', true);
+app.set('strict routing', true);
+
 app.set('port', process.env.PORT || 10010);
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,6 +17,10 @@ app.use(bodyParser.json());
 
 app.route('/words/statistic')
     .get(wordControllers.getWordsStatistic);
+
+app.route('/words/learn')
+    .get(wordControllers.getWordsForLearn)
+    .put(wordControllers.updateLearnedWord);
 
 app.route('/words')
     .get(wordControllers.getWords)
