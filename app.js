@@ -24,6 +24,7 @@ app.route('/words/learn')
 
 app.route('/words')
     .get(wordControllers.getWords)
+    .patch(wordControllers.updateWord)
     .post(wordControllers.saveWord);
 
 module.exports = app;

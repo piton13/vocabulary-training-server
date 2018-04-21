@@ -73,6 +73,28 @@ function updateLearnedWord(req, res) {
     });
 }
 
+function updateWord(req, res) {
+    const wordId = req.body._id;
+    const updatedData = {
+        translation: req.body.translation,
+        learned: false
+    };
+
+    wordModel.updateOne({_id: wordId}, {$set: updatedData})
+        .exec((err) => {
+            if (err) {
+                throw new Error('Failed to update record');
+                res.status(403).json({
+                    type: 'FailedToUpdateInDB',
+                    message: 'Can not update word answer'
+                });
+            }
+            res.status(201).json({
+                message: 'word was successfully updated'
+            });
+        });
+}
+
 function getWordsStatistic(req, res) {
     wordModel.find({}, (err, data) => {
         if (err) {
@@ -116,5 +138,6 @@ module.exports = {
     getWordsStatistic,
     getWordsForLearn,
     getWords,
-    saveWord
+    saveWord,
+    updateWord
 };
