@@ -20,7 +20,7 @@ app.route('/words/statistic')
 
 app.route('/words/learn')
     .get(wordControllers.getWordsForLearn)
-    .put(wordControllers.updateLearnedWord);
+    .patch(wordControllers.updateLearnedWord);
 
 app.route('/words')
     .get(wordControllers.getWords)
