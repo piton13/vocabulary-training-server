@@ -104,9 +104,7 @@ function getWordsStatistic(req, res) {
                 message: 'Can not find any words'
             });
         }
-        const learnedCount = data.filter((item) => {
-            item.learned
-        }).length;
+        const learnedCount = data.filter((item) => item.learned).length;
 
         res.json({
             learned: learnedCount,
