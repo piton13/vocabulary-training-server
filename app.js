@@ -27,4 +27,8 @@ app.route('/words')
     .patch(wordControllers.updateWord)
     .post(wordControllers.saveWord);
 
+app.route('/words/synchronize')
+    .post(wordControllers.saveWords)
+    .patch(wordControllers.updateWords);
+
 module.exports = app;

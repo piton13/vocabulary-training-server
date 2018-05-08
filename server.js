@@ -15,7 +15,7 @@ mongoose.connect(dbURI).then(function () {
 });
 
 mongoose.connection.on('connected', function () {
-    console.log('<<<< Mongoose default connection open to ' + dbURI);
+    console.log('<<<< Mongoose was connected');
 });
 
 mongoose.connection.on('error',function (err) {

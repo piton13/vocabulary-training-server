@@ -4,7 +4,7 @@ function getWords(req, res) {
     const isLearned = req.query.learned || false;
     wordModel.find({learned: isLearned}, (err, data) => {
         if (err) {
-            throw new Error('Failed to find in DB');
+            // throw new Error('Failed to find in DB');
             res.status(403).json({
                 type: 'FailedToFindInDB',
                 message: 'Can not find any words'
@@ -20,7 +20,7 @@ function getWordsForLearn(req, res) {
         { $match:  {learned: false} }
     ]).exec((err, data) => {
         if (err) {
-            throw new Error('Failed to find in DB');
+            // throw new Error('Failed to find in DB');
             res.status(403).json({
                 type: 'FailedToFindInDB',
                 message: 'Can not find any words'
@@ -40,7 +40,7 @@ function updateLearnedWord(req, res) {
         _id: wordId
     }).exec((err, data) => {
         if (err) {
-            throw new Error('Failed to find in DB');
+            // throw new Error('Failed to find in DB');
             res.status(403).json({
                 type: 'FailedToFindInDB',
                 message: 'Can not find any words'
@@ -62,7 +62,7 @@ function updateLearnedWord(req, res) {
         wordModel.updateOne({_id: wordId}, {$set: updatedData})
             .exec((err) => {
                 if (err) {
-                    throw new Error('Failed to update record');
+                    // throw new Error('Failed to update record');
                     res.status(403).json({
                         type: 'FailedToUpdateInDB',
                         message: 'Can not update word answer'
@@ -83,7 +83,7 @@ function updateWord(req, res) {
     wordModel.updateOne({_id: wordId}, {$set: updatedData})
         .exec((err) => {
             if (err) {
-                throw new Error('Failed to update record');
+                // throw new Error('Failed to update record');
                 res.status(403).json({
                     type: 'FailedToUpdateInDB',
                     message: 'Can not update word answer'
@@ -98,7 +98,7 @@ function updateWord(req, res) {
 function getWordsStatistic(req, res) {
     wordModel.find({}, (err, data) => {
         if (err) {
-            throw new Error('Failed to find in DB');
+            // throw new Error('Failed to find in DB');
             res.status(403).json({
                 type: 'FailedToFindInDB',
                 message: 'Can not find any words'
@@ -121,7 +121,7 @@ function saveWord(req, res) {
 
     wordModel.create(word, (err, data) => {
         if (err) {
-            throw new Error('Failed to save to DB');
+            // throw new Error('Failed to save to DB');
             res.status(403).json({
                 type: 'FailedToSaveToDB',
                 message: 'Word was not saved to DB'
@@ -131,11 +131,35 @@ function saveWord(req, res) {
     });
 }
 
+function saveWords(req, res) {
+    const words = req.body.map((word) => ({
+                foreign: word.foreign,
+                translation: word.translation
+            }));
+
+    wordModel.insertMany(words, (err, data) => {
+        if (err) {
+            // throw new Error('Failed to save to DB');
+            res.status(403).json({
+                type: 'FailedToSaveToDB',
+                message: 'Words was not saved to DB'
+            });
+        }
+        res.end('Records were successfully saved!');
+    });
+}
+
+function updateWords(req, res) {
+    res.end('Not implemented yet!');
+}
+
 module.exports = {
     updateLearnedWord,
     getWordsStatistic,
     getWordsForLearn,
     getWords,
     saveWord,
-    updateWord
+    saveWords,
+    updateWord,
+    updateWords
 };

@@ -13,8 +13,10 @@ It's simple node.js server which allows to store foreign words to DB. And provid
     - [x] Implement endpoint to obtain random set of not learned words.
     - [x] Implement logic for handling obtained translations.
     - [ ] Implement logic for making backups to local storage.
+    - [ ] Implement handling of db communication errors.
     - [ ] Add unit and integration tests.
     - [ ] Implement CI.
+    - [x] Implement deploy to heroku.
     - [ ] Implement connection with DB. (redis)
 
-## Server is available on https://ancient-bastion-17497.herokuapp.com/
+## Server is available on https://vocabulary-training.herokuapp.com/
