@@ -8,8 +8,7 @@ const WordSchema = new mongoose.Schema({
     },
     translation: {
         type: String,
-        required: true,
-        message: 'Translation for word is mandatory'
+        message: 'Translation for word is not mandatory'
     },
     successAnswers: {
         type: Number,
