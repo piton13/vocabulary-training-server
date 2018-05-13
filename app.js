@@ -10,8 +10,6 @@ const app = express();
 app.set('case sensitive routing', true);
 app.set('strict routing', true);
 
-app.set('port', process.env.PORT || 10010);
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -24,8 +22,11 @@ app.route('/words/learn')
 
 app.route('/words')
     .get(wordControllers.getWords)
-    .patch(wordControllers.updateWord)
     .post(wordControllers.saveWord);
+
+app.route('/words/:id')
+    .get(wordControllers.getWord)
+    .patch(wordControllers.updateWord);
 
 app.route('/words/synchronize')
     .post(wordControllers.saveWords)

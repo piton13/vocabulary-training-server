@@ -1,17 +1,23 @@
 const app = require('./app');
 const mongoose = require('mongoose');
+const config = require('config');
 
-const dbURI = `mongodb://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PASS}@ds129906.mlab.com:29906/${process.env.MONGOOSE_DB}`;
+const dbURI = config.DBHost;
 const dbConnectionTimeout = 60*60*1000;
 
-app.listen(app.get('port'), function () {
-    console.error(`Node cluster worker ${process.pid}: listening on port ${app.get('port')}`);
+if(config.util.getEnv('NODE_ENV') !== 'test') {
+    //use morgan to log at command line
+    // app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
+}
+
+app.listen(config.PORT, function () {
+    console.error(`Node cluster worker ${process.pid}: listening on port ${config.PORT}`);
 });
 
 mongoose.connect(dbURI).then(function () {
     console.log('...connection was successful');
 }).catch(function (err) {
-    console.error('Unable to connect to the database:', err);
+    console.error(`Unable to connect to the database:`, err);
 });
 
 mongoose.connection.on('connected', function () {
@@ -48,3 +54,5 @@ process.on('SIGINT', function() {
         process.exit(0);
     });
 });
+
+module.exports = app; // for testing

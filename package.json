@@ -12,11 +12,20 @@
     "npm": "5.6.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "start-dev": "NODE_ENV=dev node server.js",
+    "test": "npm run test-int",
+    "test-int": "NODE_ENV=test mocha test/**/*.js --timeout 3000"
   },
   "dependencies": {
     "body-parser": "1.18.2",
+    "config": "1.30.0",
     "express": "4.16.3",
     "mongoose": "5.0.14"
+  },
+  "devDependencies": {
+    "chai": "4.1.2",
+    "mocha": "5.1.1",
+    "supertest": "3.0.0"
   }
 }

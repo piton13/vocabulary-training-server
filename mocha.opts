@@ -1,0 +1,2 @@
+--require test-int.config.js
+    --reporter spec

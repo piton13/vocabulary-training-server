@@ -1,5 +1,19 @@
 const wordModel = require('../models/word');
 
+function getWord(req, res) {
+    const wordId = req.params.id;
+    wordModel.findOne({_id: wordId}, (err, data) => {
+        if (err) {
+            // throw new Error('Failed to find in DB');
+            res.status(403).json({
+                type: 'FailedToFindInDB',
+                message: 'Can not find any words'
+            });
+        }
+        res.json(data);
+    });
+}
+
 function getWords(req, res) {
     const isLearned = req.query.learned || false;
     wordModel.find({learned: isLearned}, (err, data) => {
@@ -74,14 +88,14 @@ function updateLearnedWord(req, res) {
 }
 
 function updateWord(req, res) {
-    const wordId = req.body._id;
+    const wordId = req.params.id;
     const updatedData = {
         translation: req.body.translation,
         learned: false
     };
 
     wordModel.updateOne({_id: wordId}, {$set: updatedData})
-        .exec((err) => {
+        .exec((err, data) => {
             if (err) {
                 // throw new Error('Failed to update record');
                 res.status(403).json({
@@ -89,9 +103,7 @@ function updateWord(req, res) {
                     message: 'Can not update word answer'
                 });
             }
-            res.status(201).json({
-                message: 'word was successfully updated'
-            });
+            res.status(201).json(data);
         });
 }
 
@@ -157,6 +169,7 @@ module.exports = {
     updateLearnedWord,
     getWordsStatistic,
     getWordsForLearn,
+    getWord,
     getWords,
     saveWord,
     saveWords,
