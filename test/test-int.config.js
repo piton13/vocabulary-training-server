@@ -9,8 +9,3 @@ global.expect = chai.expect;
 global.request = supertest(app);
 
 const server = require('../server');
-
-after((done) => { //To close server
-    process.exit(0);
-    done();
-});

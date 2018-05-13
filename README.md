@@ -15,8 +15,9 @@ It's simple node.js server which allows to store foreign words to DB. And provid
     - [ ] Implement logic for making backups to local storage.
     - [ ] Implement handling of db communication errors.
     - [ ] Authorization for users.
-    - [ ] Add unit and integration tests.
-    - [ ] Implement CI.
+    - [+/-] Add unit and integration tests.
+    - [ ] Increase test coverage.
+    - [x] Implement CI.
     - [x] Implement deploy to heroku.
     - [ ] Documentation for api. (swagger)
     - [ ] Implement connection with DB. (redis)

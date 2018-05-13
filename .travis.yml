@@ -4,3 +4,9 @@ cache:
     - "node_modules"
 env:
   - NODE_ENV=test
+notifications:
+  email:
+    recipients:
+      - igor13luk@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
