@@ -2,7 +2,7 @@ const app = require('./app');
 const mongoose = require('mongoose');
 const config = require('config');
 
-const dbURI = config.DBHost;
+const dbURI = config.DBHost || process.env.DBHost;
 const dbConnectionTimeout = 60*60*1000;
 
 if(config.util.getEnv('NODE_ENV') !== 'test') {
@@ -10,8 +10,10 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     // app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
 
-app.listen(config.PORT, function () {
-    console.error(`Node cluster worker ${process.pid}: listening on port ${config.PORT}`);
+const port = config.PORT || process.env.PORT;
+
+app.listen(port, function () {
+    console.error(`Node cluster worker ${process.pid}: listening on port ${port}`);
 });
 
 mongoose.connect(dbURI).then(function () {
