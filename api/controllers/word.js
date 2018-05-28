@@ -1,13 +1,9 @@
 const wordService = require('../db-services/wordService');
 
-async function getWords(req, res, next) {
+async function getWords(req, res) {
     const isLearned = req.query.learned;
-    try {
-        const words = await wordService.getWords(isLearned);
-        res.json(words);
-    } catch(e) {
-        next(e);
-    }
+    const words = await wordService.getWords(isLearned);
+    res.json(words);
 }
 
 async function saveWord(req, res, next) {
@@ -15,23 +11,14 @@ async function saveWord(req, res, next) {
         foreign: req.body.foreign,
         translation: req.body.translation
     };
-
-    try {
-        const result = await wordService.saveWord(word);
-        res.json(result);
-    } catch(e) {
-        next(e);
-    }
+    const result = await wordService.saveWord(word);
+    res.json(result);
 }
 
 async function getWord(req, res, next) {
     const wordId = req.params.id;
-    try {
-        const word = await wordService.getWordById(wordId);
-        res.json(word);
-    } catch(e) {
-        next(e);
-    }
+    const word = await wordService.getWordById(wordId);
+    res.json(word);
 }
 
 async function updateWord(req, res, next) {
@@ -40,43 +27,26 @@ async function updateWord(req, res, next) {
         translation: req.body.translation,
         learned: false
     };
-
-    try {
-        const words = await wordService.updateWord(wordId, updatedData);
-        res.status(201).json(words);
-    } catch(e) {
-        next(e);
-    }
+    const words = await wordService.updateWord(wordId, updatedData);
+    res.status(201).json(words);
 }
 
 async function getWordsForLearn(req, res, next) {
-    try {
-        const words = await wordService.getWordsForLearn();
-        res.json(words);
-    } catch(e) {
-        next(e);
-    }
+    const words = await wordService.getWordsForLearn();
+    res.json(words);
 }
 
 async function updateLearnedWord(req, res, next) {
     const wordId = req.body._id;
     const updatedData = req.body.updatedData;
 
-    try {
-        const words = await wordService.updateWord(wordId, updatedData);
-        res.json(words);
-    } catch(e) {
-        next(e);
-    }
+    const words = await wordService.updateWord(wordId, updatedData);
+    res.json(words);
 }
 
 async function getWordsStatistic(req, res, next) {
-    try {
-        const words = await wordService.getWordsStatistic();
-        res.json(words);
-    } catch(e) {
-        next(e);
-    }
+    const words = await wordService.getWordsStatistic();
+    res.json(words);
 }
 
 async function saveWords(req, res, next) {
@@ -84,13 +54,8 @@ async function saveWords(req, res, next) {
         foreign: word.foreign,
         translation: word.translation
     }));
-
-    try {
-        const words = await wordService.saveWords(words);
-        res.json(words);
-    } catch(e) {
-        next(e);
-    }
+    const words = await wordService.saveWords(words);
+    res.json(words);
 }
 
 function updateWords(req, res, next) {

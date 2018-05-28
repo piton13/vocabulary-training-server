@@ -3,15 +3,11 @@ const Word = require('../api/models/word');
 describe('API Word Routes', function() {
     let word;
 
-    before((done) => {
+    before((done) => { //To clear list of words
         word = {
             foreign: 'word',
             translation: 'word translation'
         };
-        done();
-    });
-
-    after((done) => { //To clear list of words
         Word.remove({}, (err) => {
             done();
         });

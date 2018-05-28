@@ -15,24 +15,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.route('/words')
-    .get(wordControllers.getWords)
-    .post(wordControllers.saveWord);
+    .get(wrapAsync(wordControllers.getWords))
+    .post(wrapAsync(wordControllers.saveWord));
 
 app.route('/words/:id')
-    .get(wordControllers.getWord)
-    .patch(wordControllers.updateWord);
+    .get(wrapAsync(wordControllers.getWord))
+    .patch(wrapAsync(wordControllers.updateWord));
 
 app.route('/words/statistic')
-    .get(wordControllers.getWordsStatistic);
+    .get(wrapAsync(wordControllers.getWordsStatistic));
 
 app.route('/words/learn')
-    .get(wordControllers.getWordsForLearn)
-    .patch(wordControllers.updateLearnedWord);
+    .get(wrapAsync(wordControllers.getWordsForLearn))
+    .patch(wrapAsync(wordControllers.updateLearnedWord));
 
 app.route('/words/synchronize')
-    .post(wordControllers.saveWords)
+    .post(wrapAsync(wordControllers.saveWords))
     .patch(wordControllers.updateWords);
 
 app.use(errorHandlerMiddleware.handleDBErrors, errorHandlerMiddleware.handleOtherErrors);
+
+function wrapAsync(fn) {
+    return (req, res, next) => {
+        fn(req, res, next).catch(next);
+    }
+}
 
 module.exports = app;
