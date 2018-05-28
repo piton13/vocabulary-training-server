@@ -1,164 +1,120 @@
-const wordModel = require('../models/word');
+const wordService = require('../db-services/wordService');
 
-function getWord(req, res) {
+async function getWords(req, res) {
+    const isLearned = req.query.learned;
+    try {
+        const words = await wordService.getWords(isLearned);
+        res.json(words);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToFindInDB',
+            message: 'Can not find any words'
+        });
+    }
+}
+
+async function saveWord(req, res) {
+    const word = {
+        foreign: req.body.foreign,
+        translation: req.body.translation
+    };
+
+    try {
+        const result = await wordService.saveWord(word);
+        res.json(result);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToSaveToDB',
+            message: 'Word was not saved to DB'
+        });
+    }
+}
+
+async function getWord(req, res) {
     const wordId = req.params.id;
-    wordModel.findOne({_id: wordId}, (err, data) => {
-        if (err) {
-            // throw new Error('Failed to find in DB');
-            res.status(403).json({
-                type: 'FailedToFindInDB',
-                message: 'Can not find any words'
-            });
-        }
-        res.json(data);
-    });
+    try {
+        const word = await wordService.getWordById(wordId);
+        res.json(word);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToFindInDB',
+            message: 'Can not specified word'
+        });
+    }
 }
 
-function getWords(req, res) {
-    const isLearned = req.query.learned || false;
-    wordModel.find({learned: isLearned}, (err, data) => {
-        if (err) {
-            // throw new Error('Failed to find in DB');
-            res.status(403).json({
-                type: 'FailedToFindInDB',
-                message: 'Can not find any words'
-            });
-        }
-        res.json(data);
-    });
-}
-
-function getWordsForLearn(req, res) {
-    wordModel.aggregate([
-        { $sample: { size: 10 }},
-        { $match:  {learned: false} }
-    ]).exec((err, data) => {
-        if (err) {
-            // throw new Error('Failed to find in DB');
-            res.status(403).json({
-                type: 'FailedToFindInDB',
-                message: 'Can not find any words'
-            });
-        }
-        res.json(data);
-    });
-}
-
-function updateLearnedWord(req, res) {
-    const wordId = req.body._id;
-    const translationAnswer = req.body.translation;
-    const updatedData = {};
-    let status;
-
-    wordModel.findOne({
-        _id: wordId
-    }).exec((err, data) => {
-        if (err) {
-            // throw new Error('Failed to find in DB');
-            res.status(403).json({
-                type: 'FailedToFindInDB',
-                message: 'Can not find any words'
-            });
-        }
-        if (data.translation === translationAnswer) {
-            updatedData.successAnswers = ++data.successAnswers;
-            status = 'correct answer';
-            res.status(200);
-        } else {
-            updatedData.successAnswers = data.successAnswers - 3;
-            status = 'not correct answer';
-            res.status(406);
-        }
-
-        if(updatedData.successAnswers < 0) {updatedData.successAnswers = 0}
-        if(updatedData.successAnswers > 6) {updatedData.learned = true}
-
-        wordModel.updateOne({_id: wordId}, {$set: updatedData})
-            .exec((err) => {
-                if (err) {
-                    // throw new Error('Failed to update record');
-                    res.status(403).json({
-                        type: 'FailedToUpdateInDB',
-                        message: 'Can not update word answer'
-                    });
-                }
-                res.json({status: status});
-            });
-    });
-}
-
-function updateWord(req, res) {
+async function updateWord(req, res) {
     const wordId = req.params.id;
     const updatedData = {
         translation: req.body.translation,
         learned: false
     };
 
-    wordModel.updateOne({_id: wordId}, {$set: updatedData})
-        .exec((err, data) => {
-            if (err) {
-                // throw new Error('Failed to update record');
-                res.status(403).json({
-                    type: 'FailedToUpdateInDB',
-                    message: 'Can not update word answer'
-                });
-            }
-            res.status(201).json(data);
+    try {
+        const words = await wordService.updateWord(wordId, updatedData);
+        res.status(201).json(words);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToSaveToDB',
+            message: 'Can not save to DB'
         });
+    }
 }
 
-function getWordsStatistic(req, res) {
-    wordModel.find({}, (err, data) => {
-        if (err) {
-            // throw new Error('Failed to find in DB');
-            res.status(403).json({
-                type: 'FailedToFindInDB',
-                message: 'Can not find any words'
-            });
-        }
-        const learnedCount = data.filter((item) => item.learned).length;
-
-        res.json({
-            learned: learnedCount,
-            notLearned: data.length - learnedCount
+async function getWordsForLearn(req, res) {
+    try {
+        const words = await wordService.getWordsForLearn();
+        res.json(words);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToFindInDB',
+            message: 'Can not find any words'
         });
-    });
+    }
 }
 
-function saveWord(req, res) {
-    const word = {
-        foreign: req.body.foreign,
-        translation: req.body.translation
-    };
+async function updateLearnedWord(req, res) {
+    const wordId = req.body._id;
+    const updatedData = req.body.updatedData;
 
-    wordModel.create(word, (err, data) => {
-        if (err) {
-            // throw new Error('Failed to save to DB');
-            res.status(403).json({
-                type: 'FailedToSaveToDB',
-                message: 'Word was not saved to DB'
-            });
-        }
-        res.json(data);
-    });
+    try {
+        const words = await wordService.updateWord(wordId, updatedData);
+        res.json(words);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToSaveToDB',
+            message: 'Can not save to DB'
+        });
+    }
 }
 
-function saveWords(req, res) {
+async function getWordsStatistic(req, res) {
+    try {
+        const words = await wordService.getWordsStatistic();
+        res.json(words);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToFindInDB',
+            message: 'Can not find any words'
+        });
+    }
+}
+
+async function saveWords(req, res) {
     const words = req.body.map((word) => ({
-                foreign: word.foreign,
-                translation: word.translation
-            }));
+        foreign: word.foreign,
+        translation: word.translation
+    }));
 
-    wordModel.insertMany(words, (err, data) => {
-        if (err) {
-            // throw new Error('Failed to save to DB');
-            res.status(403).json({
-                type: 'FailedToSaveToDB',
-                message: 'Words was not saved to DB'
-            });
-        }
-        res.end('Records were successfully saved!');
-    });
+    try {
+        const words = await wordService.saveWords(words);
+        res.json(words);
+    } catch(e) {
+        res.status(403).json({
+            type: 'FailedToSaveToDB',
+            message: 'Words was not saved to DB'
+        });
+    }
 }
 
 function updateWords(req, res) {
@@ -166,12 +122,12 @@ function updateWords(req, res) {
 }
 
 module.exports = {
+    getWords,
+    saveWord,
+    getWord,
     updateLearnedWord,
     getWordsStatistic,
     getWordsForLearn,
-    getWord,
-    getWords,
-    saveWord,
     saveWords,
     updateWord,
     updateWords
