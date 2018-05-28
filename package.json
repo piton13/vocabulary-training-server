@@ -14,14 +14,15 @@
   "scripts": {
     "start": "node server.js",
     "start-dev": "set DEBUG=express:* NODE_ENV=dev & node server.js",
-    "test": "npm run test-int",
-    "test-int": "set NODE_ENV=test & mocha test/**/*.js --bail --timeout 3000 --exit"
+    "test": "snyk test && npm run test-int",
+    "test-int": "mocha test/**/*.js --bail --timeout 3000 --exit"
   },
   "dependencies": {
     "body-parser": "1.18.2",
     "config": "1.30.0",
     "express": "4.16.3",
-    "mongoose": "5.0.14"
+    "mongoose": "5.0.14",
+    "snyk": "1.82.0"
   },
   "devDependencies": {
     "chai": "4.1.2",

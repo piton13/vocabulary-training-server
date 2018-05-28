@@ -1,4 +1,3 @@
 {
-  "PORT": "3737",
-  "DBHost": "mongodb://igor123:ytrewq@ds119060.mlab.com:19060/vocabularydb-test"
+  "DBHost": ""
 }
