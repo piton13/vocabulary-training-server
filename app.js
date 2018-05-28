@@ -8,6 +8,11 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+const wrapAsync = (fn) => (req, res, next) => {
+    Promise.resolve(fn(req, res, next))
+        .catch(next);
+};
+
 app.set('case sensitive routing', true);
 app.set('strict routing', true);
 
@@ -34,11 +39,5 @@ app.route('/words/synchronize')
     .patch(wordControllers.updateWords);
 
 app.use(errorHandlerMiddleware.handleDBErrors, errorHandlerMiddleware.handleOtherErrors);
-
-function wrapAsync(fn) {
-    return (req, res, next) => {
-        fn(req, res, next).catch(next);
-    }
-}
 
 module.exports = app;
