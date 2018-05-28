@@ -1,10 +1,11 @@
 const wordModel = require('../models/word');
+const DBError = require('../../utils/DBErrors');
 
 async function getWordById(id) {
     return new Promise((resolve, reject) => {
         wordModel.findOne({_id: id}, (err, data) => {
             if (err) {
-                reject(err);
+                reject(new DBError(err.message, 403));
             }
             resolve(data);
         });
@@ -15,7 +16,7 @@ async function getWords(isLearned = false) {
     return new Promise((resolve, reject) => {
         wordModel.find({learned: isLearned}, (err, data) => {
             if (err) {
-                reject(err);
+                reject(new DBError(err.message, 403));
             }
             resolve(data);
         });
@@ -29,7 +30,7 @@ async function getWordsForLearn() {
             { $match:  {learned: false} }
         ]).exec((err, data) => {
             if (err) {
-                reject(err);
+                reject(new DBError(err.message, 403));
             }
             resolve(data);
         });
@@ -41,7 +42,7 @@ async function updateWord(wordId, updatedData) {
         wordModel.updateOne({_id: wordId}, {$set: updatedData})
             .exec((err, data) => {
                 if (err) {
-                    reject(err);
+                    reject(new DBError(err.message, 402));
                 }
                 resolve(data);
             });
@@ -74,7 +75,7 @@ async function getWordsStatistic() {
     return new Promise((resolve, reject) => {
         wordModel.find({}, (err, data) => {
             if (err) {
-                reject(err);
+                reject(new DBError(err.message, 403));
             }
             const learnedCount = data.filter((item) => item.learned).length;
 
@@ -90,7 +91,7 @@ async function saveWord(word) {
     return new Promise((resolve, reject) => {
         wordModel.create(word, (err, data) => {
             if (err) {
-                reject(err);
+                reject(new DBError(err.message, 402));
             }
             resolve(data);
         });
@@ -101,7 +102,7 @@ async function saveWords(words) {
     return new Promise((resolve, reject) => {
         wordModel.insertMany(words, (err, data) => {
             if (err) {
-                reject(err);
+                reject(new DBError(err.message, 402));
             }
             resolve(data);
         });

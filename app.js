@@ -1,6 +1,7 @@
 'use strict';
 
 const wordControllers = require('./api/controllers/word');
+const errorHandlerMiddleware = require('./api/error-handlers');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -31,5 +32,7 @@ app.route('/words/learn')
 app.route('/words/synchronize')
     .post(wordControllers.saveWords)
     .patch(wordControllers.updateWords);
+
+app.use(errorHandlerMiddleware.handleDBErrors, errorHandlerMiddleware.handleOtherErrors);
 
 module.exports = app;

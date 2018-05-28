@@ -1,19 +1,16 @@
 const wordService = require('../db-services/wordService');
 
-async function getWords(req, res) {
+async function getWords(req, res, next) {
     const isLearned = req.query.learned;
     try {
         const words = await wordService.getWords(isLearned);
         res.json(words);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToFindInDB',
-            message: 'Can not find any words'
-        });
+        next(e);
     }
 }
 
-async function saveWord(req, res) {
+async function saveWord(req, res, next) {
     const word = {
         foreign: req.body.foreign,
         translation: req.body.translation
@@ -23,27 +20,21 @@ async function saveWord(req, res) {
         const result = await wordService.saveWord(word);
         res.json(result);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToSaveToDB',
-            message: 'Word was not saved to DB'
-        });
+        next(e);
     }
 }
 
-async function getWord(req, res) {
+async function getWord(req, res, next) {
     const wordId = req.params.id;
     try {
         const word = await wordService.getWordById(wordId);
         res.json(word);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToFindInDB',
-            message: 'Can not specified word'
-        });
+        next(e);
     }
 }
 
-async function updateWord(req, res) {
+async function updateWord(req, res, next) {
     const wordId = req.params.id;
     const updatedData = {
         translation: req.body.translation,
@@ -54,26 +45,20 @@ async function updateWord(req, res) {
         const words = await wordService.updateWord(wordId, updatedData);
         res.status(201).json(words);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToSaveToDB',
-            message: 'Can not save to DB'
-        });
+        next(e);
     }
 }
 
-async function getWordsForLearn(req, res) {
+async function getWordsForLearn(req, res, next) {
     try {
         const words = await wordService.getWordsForLearn();
         res.json(words);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToFindInDB',
-            message: 'Can not find any words'
-        });
+        next(e);
     }
 }
 
-async function updateLearnedWord(req, res) {
+async function updateLearnedWord(req, res, next) {
     const wordId = req.body._id;
     const updatedData = req.body.updatedData;
 
@@ -81,26 +66,20 @@ async function updateLearnedWord(req, res) {
         const words = await wordService.updateWord(wordId, updatedData);
         res.json(words);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToSaveToDB',
-            message: 'Can not save to DB'
-        });
+        next(e);
     }
 }
 
-async function getWordsStatistic(req, res) {
+async function getWordsStatistic(req, res, next) {
     try {
         const words = await wordService.getWordsStatistic();
         res.json(words);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToFindInDB',
-            message: 'Can not find any words'
-        });
+        next(e);
     }
 }
 
-async function saveWords(req, res) {
+async function saveWords(req, res, next) {
     const words = req.body.map((word) => ({
         foreign: word.foreign,
         translation: word.translation
@@ -110,14 +89,11 @@ async function saveWords(req, res) {
         const words = await wordService.saveWords(words);
         res.json(words);
     } catch(e) {
-        res.status(403).json({
-            type: 'FailedToSaveToDB',
-            message: 'Words was not saved to DB'
-        });
+        next(e);
     }
 }
 
-function updateWords(req, res) {
+function updateWords(req, res, next) {
     res.end('Not implemented yet!');
 }
 

@@ -50,7 +50,6 @@ describe('API Word Routes', function() {
         it('should find specified word by id in DB', (done) => {
             request.get(`/words/${word._id}`)
                 .end((err, res) => {
-                    console.log(res.body);
                     res.statusCode.should.be.eql(200);
                     res.body.should.be.a('object');
                     res.body.learned.should.be.eql(false);
