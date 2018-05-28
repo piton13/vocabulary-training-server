@@ -13,9 +13,9 @@
   },
   "scripts": {
     "start": "node server.js",
-    "start-dev": "NODE_ENV=dev node server.js",
+    "start-dev": "set DEBUG=express:* NODE_ENV=dev & node server.js",
     "test": "npm run test-int",
-    "test-int": "NODE_ENV=test mocha test/**/*.js --bail --timeout 3000 --exit"
+    "test-int": "set NODE_ENV=test & mocha test/**/*.js --bail --timeout 3000 --exit"
   },
   "dependencies": {
     "body-parser": "1.18.2",

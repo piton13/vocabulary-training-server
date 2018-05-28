@@ -13,7 +13,8 @@ It's simple node.js server which allows to store foreign words to DB. And provid
     - [x] Implement endpoint to obtain random set of not learned words.
     - [x] Implement logic for handling obtained translations.
     - [ ] Implement logic for making backups to local storage.
-    - [ ] Implement handling of db communication errors.
+    - [x] Implement handling of db communication errors.
+    - [x] Implement error handler middleware.
     - [ ] Authorization for users.
     - [+/-] Add unit and integration tests.
     - [ ] Increase test coverage.
