@@ -76,4 +76,29 @@ describe('API Word Routes', function() {
                 });
         });
     });
+
+    describe('/GET words statistic', () => {
+        it('should obtain statistic of words from DB', (done) => {
+            request.get(`/words-statistic`)
+                .end((err, res) => {
+                    res.statusCode.should.be.eql(200);
+                    res.body.learned.should.be.eql(0);
+                    res.body.notLearned.should.be.eql(1);
+                    done();
+                });
+        });
+    });
+
+    describe('/GET words for learning', () => {
+        it('should obtain words to learn from DB', (done) => {
+            request.get(`/words-to-learn`)
+                .end((err, res) => {
+                    res.statusCode.should.be.eql(200);
+                    res.body.should.be.a('array');
+                    res.body.length.should.be.eql(1);
+                    res.body[0].learned.should.be.eql(false);
+                    done();
+                });
+        });
+    });
 });

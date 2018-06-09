@@ -31,6 +31,11 @@ async function updateWord(req, res, next) {
     res.status(201).json(words);
 }
 
+async function getWordsStatistic(req, res, next) {
+    const words = await wordService.getWordsStatistic();
+    res.json(words);
+}
+
 async function getWordsForLearn(req, res, next) {
     const words = await wordService.getWordsForLearn();
     res.json(words);
@@ -41,11 +46,6 @@ async function updateLearnedWord(req, res, next) {
     const updatedData = req.body.updatedData;
 
     const words = await wordService.updateWord(wordId, updatedData);
-    res.json(words);
-}
-
-async function getWordsStatistic(req, res, next) {
-    const words = await wordService.getWordsStatistic();
     res.json(words);
 }
 
@@ -66,10 +66,11 @@ module.exports = {
     getWords,
     saveWord,
     getWord,
-    updateLearnedWord,
+    updateWord,
     getWordsStatistic,
     getWordsForLearn,
+
     saveWords,
-    updateWord,
+    updateLearnedWord,
     updateWords
 };

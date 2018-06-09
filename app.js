@@ -27,16 +27,16 @@ app.route('/words/:id')
     .get(wrapAsync(wordControllers.getWord))
     .patch(wrapAsync(wordControllers.updateWord));
 
-app.route('/words/statistic')
+app.route('/words-statistic')
     .get(wrapAsync(wordControllers.getWordsStatistic));
 
-app.route('/words/learn')
-    .get(wrapAsync(wordControllers.getWordsForLearn))
-    .patch(wrapAsync(wordControllers.updateLearnedWord));
-
+app.route('/words-to-learn')
+    .get(wrapAsync(wordControllers.getWordsForLearn));
+    // .patch(wrapAsync(wordControllers.updateLearnedWord));
+/*
 app.route('/words/synchronize')
     .post(wrapAsync(wordControllers.saveWords))
-    .patch(wordControllers.updateWords);
+    .patch(wordControllers.updateWords);*/
 
 app.use(errorHandlerMiddleware.handleDBErrors, errorHandlerMiddleware.handleOtherErrors);
 
