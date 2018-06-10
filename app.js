@@ -1,6 +1,7 @@
 'use strict';
 
-const routesV1 = require('./api/routes/v1/words');
+const wordsV1 = require('./api/routes/v1/words');
+const authorizationV1 = require('./api/routes/v1/authorize');
 const errorHandlerMiddleware = require('./api/error-handlers');
 
 const express = require('express');
@@ -14,8 +15,9 @@ app.set('strict routing', true);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/api/v1', routesV1);
+app.use('/api/v1/authorize', authorizationV1);
+app.use('/api/v1', wordsV1);
 
-app.use(errorHandlerMiddleware.handleDBErrors, errorHandlerMiddleware.handleOtherErrors);
+app.use(errorHandlerMiddleware.handleAuthErrors, errorHandlerMiddleware.handleDBErrors, errorHandlerMiddleware.handleOtherErrors);
 
 module.exports = app;

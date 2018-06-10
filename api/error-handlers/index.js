@@ -1,4 +1,17 @@
 const DBError = require('../../utils/DBErrors');
+const AuthError = require('../../utils/AuthErrors');
+
+function handleAuthErrors(err, req, res, next) {
+    if (err instanceof AuthError) {
+        res.status(err.status).json({
+            type: 'AuthErrorException',
+            message: err.message,
+            stack: err.stack,
+            string: err.toString()
+        });
+    }
+    next(err);
+}
 
 function handleDBErrors(err, req, res, next) {
     if (err instanceof DBError) {
@@ -25,6 +38,7 @@ function handleOtherErrors(err, req, res, next) {
 }
 
 module.exports = {
+    handleAuthErrors,
     handleDBErrors,
     handleOtherErrors
 };
