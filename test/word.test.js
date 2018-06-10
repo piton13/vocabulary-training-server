@@ -1,4 +1,5 @@
 const Word = require('../api/models/word');
+const apiVersion = '/api/v1';
 
 describe('API Word Routes', function() {
     let word;
@@ -15,7 +16,7 @@ describe('API Word Routes', function() {
 
     describe('/GET words', () => {
         it('should GET empty list of words', (done) => {
-            request.get('/words')
+            request.get(`${apiVersion}/words`)
                 .end((err, res) => {
                     res.statusCode.should.be.eql(200);
                     res.body.should.be.a('array');
@@ -27,7 +28,7 @@ describe('API Word Routes', function() {
 
     describe('/POST word', () => {
         it('should save obtained word to DB', (done) => {
-            request.post('/words')
+            request.post(`${apiVersion}/words`)
                 .send(word)
                 .end((err, res) => {
                     res.statusCode.should.be.eql(200);
@@ -44,7 +45,7 @@ describe('API Word Routes', function() {
 
     describe('/GET word', () => {
         it('should find specified word by id in DB', (done) => {
-            request.get(`/words/${word._id}`)
+            request.get(`${apiVersion}/words/${word._id}`)
                 .end((err, res) => {
                     res.statusCode.should.be.eql(200);
                     res.body.should.be.a('object');
@@ -60,11 +61,11 @@ describe('API Word Routes', function() {
             const updatedWord = {
                 translation: 'updated translation'
             };
-            request.patch(`/words/${word._id}`)
+            request.patch(`${apiVersion}/words/${word._id}`)
                 .send(updatedWord)
                 .end((err, res) => {
                     res.statusCode.should.be.eql(201);
-                    request.get(`/words/${word._id}`)
+                    request.get(`${apiVersion}/words/${word._id}`)
                         .end((err, res) => {
                             res.statusCode.should.be.eql(200);
                             res.body.successAnswers.should.be.eql(0);
@@ -79,7 +80,7 @@ describe('API Word Routes', function() {
 
     describe('/GET words statistic', () => {
         it('should obtain statistic of words from DB', (done) => {
-            request.get(`/words-statistic`)
+            request.get(`${apiVersion}/words-statistic`)
                 .end((err, res) => {
                     res.statusCode.should.be.eql(200);
                     res.body.learned.should.be.eql(0);
@@ -91,7 +92,7 @@ describe('API Word Routes', function() {
 
     describe('/GET words for learning', () => {
         it('should obtain words to learn from DB', (done) => {
-            request.get(`/words-to-learn`)
+            request.get(`${apiVersion}/words-to-learn`)
                 .end((err, res) => {
                     res.statusCode.should.be.eql(200);
                     res.body.should.be.a('array');

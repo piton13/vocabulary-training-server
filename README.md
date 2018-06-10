@@ -15,6 +15,8 @@ It's simple node.js server which allows to store foreign words to DB. And provid
     - [ ] Implement logic for making backups to local storage.
     - [x] Implement handling of db communication errors.
     - [x] Implement error handler middleware.
+    - [x] Implement versioning of api
+    - [ ] Implement caching requests
     - [ ] Authorization for users.
     - [+/-] Add unit and integration tests.
     - [ ] Increase test coverage.
