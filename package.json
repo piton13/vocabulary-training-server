@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "body-parser": "1.18.2",
-    "config": "1.30.0",
+    "config": "3.3.1",
     "express": "4.16.3",
     "mongoose": "5.0.14",
     "snyk": "1.82.0"
